@@ -18,19 +18,25 @@ def get_dictionary(path):
             if(path == "towns"):
                 town = json.load(open(path_to_file))
                 info_dictionary[town["townId"]] = town["name"]
-
+ 
     return info_dictionary
 
 def recursive_mkdir(path):
+    print("path   =>   {}".format(path)) 
     index = path.find("/") 
+    if(index == 0 ):
+        recursive_mkdir(path[index+1:])
+        return
     if(index != -1):
         directory = path[:index]
         os.makedirs(directory, exist_ok=True)
         os.chdir(directory)
         recursive_mkdir(path.replace(directory+"/",""))
         os.chdir("..")
-    else:
+        return
+    if(len(path) != 0):
         os.makedirs(path, exist_ok=True)
+        return
 
 def main(path, cities, towns):
     for json_file in os.scandir(path):
