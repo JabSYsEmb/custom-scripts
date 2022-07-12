@@ -8,7 +8,6 @@ import json
 
 def get_dictionary(path):
     info_dictionary     = {}
-
     for json_file in os.scandir(path):
         path_to_file = "{}/{}".format(path,json_file.name)
         if(json_file.is_file()):
@@ -23,14 +22,15 @@ def get_dictionary(path):
     return info_dictionary
 
 def recursive_mkdir(path):
-    root = path.split("/")[0]
-    city_dir  = path.split("/")[1]
-    town_dir  = path.split("/").pop()
-    os.chdir(root)
-    os.makedirs(city_dir, exist_ok=True)
-    os.chdir(city_dir)
-    os.makedirs(town_dir, exist_ok=True)
-    os.chdir("../../")
+    index = path.find("/") 
+    if(index != -1):
+        directory = path[:index]
+        os.makedirs(directory, exist_ok=True)
+        os.chdir(directory)
+        recursive_mkdir(path.replace(directory+"/",""))
+        os.chdir("..")
+    else:
+        os.makedirs(path, exist_ok=True)
 
 def main(path, cities, towns):
     for json_file in os.scandir(path):
@@ -51,7 +51,6 @@ def main(path, cities, towns):
     print("all {} has been organized".format(path))
 
 if __name__ == "__main__":
-    os.makedirs("Turkiye",exist_ok=True)
     cities = get_dictionary("cities")
     towns  = get_dictionary("towns")
     main("quarters", cities, towns)
