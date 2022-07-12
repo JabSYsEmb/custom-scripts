@@ -22,21 +22,20 @@ def get_dictionary(path):
     return info_dictionary
 
 def recursive_mkdir(path):
-    print("path   =>   {}".format(path)) 
     index = path.find("/") 
     if(index == 0 ):
         recursive_mkdir(path[index+1:])
-        return
+        return # function terminator
     if(index != -1):
         directory = path[:index]
         os.makedirs(directory, exist_ok=True)
         os.chdir(directory)
         recursive_mkdir(path.replace(directory+"/",""))
         os.chdir("..")
-        return
+        return # function terminator
     if(len(path) != 0):
         os.makedirs(path, exist_ok=True)
-        return
+        return # function terminator
 
 def main(path, cities, towns):
     for json_file in os.scandir(path):
