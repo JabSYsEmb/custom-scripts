@@ -1,7 +1,7 @@
 const axios = require("axios");
 const fs    = require("fs");
 
-const sahibinden_crawler = async function(url)
+const crawler = async function(url)
 {
   let index = 0;
   while (index != 10)
@@ -40,4 +40,4 @@ const sahibinden_crawler = async function(url)
   }
 }
 
-sahibinden_crawler();
+crawler();
